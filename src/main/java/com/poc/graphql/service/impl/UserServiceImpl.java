@@ -1,6 +1,10 @@
 package com.poc.graphql.service.impl;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,21 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.poc.graphql.dto.UserInput;
 import com.poc.graphql.entity.User;
 import com.poc.graphql.exception.DuplicateResourceException;
+import com.poc.graphql.exception.InvalidFileException;
 import com.poc.graphql.exception.ResourceNotFoundException;
 import com.poc.graphql.repository.UserRepository;
-import com.poc.graphql.service.FileStorageService;
 import com.poc.graphql.service.UserService;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final FileStorageService fileStorageService;
+    private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
 
-    public UserServiceImpl(UserRepository userRepository, FileStorageService fileStorageService) {
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -60,27 +64,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        User user = getUserById(id);
-        userRepository.delete(user);
-        fileStorageService.delete(user.getProfileImageUrl());
+        userRepository.delete(getUserById(id));
     }
 
     @Override
     public User updateProfileImage(Long id, MultipartFile file) {
         User user = getUserById(id);
-        String oldUrl = user.getProfileImageUrl();
-        user.setProfileImageUrl(fileStorageService.storeProfileImage(file));
-        User saved = userRepository.save(user);
-        fileStorageService.delete(oldUrl);
-        return saved;
+        if (file == null || file.isEmpty()) {
+            throw new InvalidFileException("File is empty");
+        }
+        String contentType = file.getContentType();
+        if (!ALLOWED_IMAGE_TYPES.contains(contentType)) {
+            throw new InvalidFileException("Only JPEG, PNG and WEBP images are allowed");
+        }
+        try {
+            String base64 = Base64.getEncoder().encodeToString(file.getBytes());
+            user.setProfileImage("data:" + contentType + ";base64," + base64);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Could not read uploaded file", e);
+        }
+        return userRepository.save(user);
     }
 
     @Override
     public void removeProfileImage(Long id) {
         User user = getUserById(id);
-        String oldUrl = user.getProfileImageUrl();
-        user.setProfileImageUrl(null);
+        user.setProfileImage(null);
         userRepository.save(user);
-        fileStorageService.delete(oldUrl);
     }
 }

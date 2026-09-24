@@ -40,7 +40,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ApiResponse<Void>> handleTooLarge(MaxUploadSizeExceededException ex) {
-        return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE).body(ApiResponse.error("File is too large, maximum size is 5MB"));
+        return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE).body(ApiResponse.error("File is too large, maximum size is 2MB"));
     }
 
     @ExceptionHandler(Exception.class)

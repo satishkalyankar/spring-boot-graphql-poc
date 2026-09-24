@@ -26,7 +26,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String profileImageUrl;
+    // Stored as a data URI, e.g. data:image/png;base64,iVBOR...
+    @Column(columnDefinition = "LONGTEXT")
+    private String profileImage;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
@@ -63,12 +65,12 @@ public class User {
         this.email = email;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public List<Order> getOrders() {

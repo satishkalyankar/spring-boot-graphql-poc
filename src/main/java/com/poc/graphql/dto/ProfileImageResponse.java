@@ -3,14 +3,16 @@ package com.poc.graphql.dto;
 public class ProfileImageResponse {
 
     private Long userId;
-    private String profileImageUrl;
+    private String contentType;
+    private long sizeInBytes;
 
     public ProfileImageResponse() {
     }
 
-    public ProfileImageResponse(Long userId, String profileImageUrl) {
+    public ProfileImageResponse(Long userId, String contentType, long sizeInBytes) {
         this.userId = userId;
-        this.profileImageUrl = profileImageUrl;
+        this.contentType = contentType;
+        this.sizeInBytes = sizeInBytes;
     }
 
     public Long getUserId() {
@@ -21,11 +23,19 @@ public class ProfileImageResponse {
         this.userId = userId;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public long getSizeInBytes() {
+        return sizeInBytes;
+    }
+
+    public void setSizeInBytes(long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
     }
 }

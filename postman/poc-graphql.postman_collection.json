@@ -5,10 +5,22 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:9091" },
-    { "key": "graphqlPath", "value": "/graphql" },
-    { "key": "userId", "value": "1" },
-    { "key": "orderId", "value": "1" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:9091"
+    },
+    {
+      "key": "graphqlPath",
+      "value": "/graphql"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    },
+    {
+      "key": "orderId",
+      "value": "1"
+    }
   ],
   "item": [
     {
@@ -35,11 +47,16 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation CreateUser($input: UserInput!) {\n  createUser(input: $input) {\n    success\n    message\n    data { id name email profileImageUrl }\n  }\n}",
+                "query": "mutation CreateUser($input: UserInput!) {\n  createUser(input: $input) {\n    success\n    message\n    data { id name email }\n  }\n}",
                 "variables": "{\n  \"input\": {\n    \"name\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\"\n  }\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -50,11 +67,16 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query {\n  users {\n    success\n    message\n    data {\n      id\n      name\n      email\n      profileImageUrl\n      orders { id product amount }\n    }\n  }\n}",
+                "query": "query {\n  users {\n    success\n    message\n    data {\n      id\n      name\n      email\n      orders { id product amount }\n    }\n  }\n}",
                 "variables": ""
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -65,11 +87,16 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query GetUser($id: ID!) {\n  user(id: $id) {\n    success\n    message\n    data {\n      id\n      name\n      email\n      profileImageUrl\n      orders { id product amount }\n    }\n  }\n}",
+                "query": "query GetUser($id: ID!) {\n  user(id: $id) {\n    success\n    message\n    data {\n      id\n      name\n      email\n      profileImage\n      orders { id product amount }\n    }\n  }\n}",
                 "variables": "{\n  \"id\": \"{{userId}}\"\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -84,7 +111,12 @@
                 "variables": "{\n  \"id\": \"{{userId}}\",\n  \"input\": {\n    \"name\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\"\n  }\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -99,14 +131,20 @@
                   "key": "file",
                   "type": "file",
                   "src": [],
-                  "description": "Select a JPEG, PNG or WEBP image (max 5MB)"
+                  "description": "Select a JPEG, PNG or WEBP image (max 2MB)"
                 }
               ]
             },
             "url": {
               "raw": "{{baseUrl}}/api/users/{{userId}}/profile-image",
-              "host": ["{{baseUrl}}/api"],
-              "path": ["users", "{{userId}}", "profile-image"]
+              "host": [
+                "{{baseUrl}}/api"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "profile-image"
+              ]
             },
             "description": "Body > form-data > key `file` — pick an image file before sending."
           }
@@ -118,8 +156,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/users/{{userId}}/profile-image",
-              "host": ["{{baseUrl}}/api"],
-              "path": ["users", "{{userId}}", "profile-image"]
+              "host": [
+                "{{baseUrl}}/api"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "profile-image"
+              ]
             }
           }
         },
@@ -135,7 +179,12 @@
                 "variables": "{\n  \"id\": \"{{userId}}\"\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] },
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            },
             "description": "Also deletes the user's orders and profile image."
           }
         }
@@ -169,7 +218,12 @@
                 "variables": "{\n  \"input\": {\n    \"userId\": \"{{userId}}\",\n    \"product\": \"Laptop\",\n    \"amount\": 55000.50\n  }\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -184,7 +238,12 @@
                 "variables": ""
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -199,7 +258,12 @@
                 "variables": "{\n  \"id\": \"{{orderId}}\"\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -214,7 +278,12 @@
                 "variables": "{\n  \"userId\": \"{{userId}}\"\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -229,7 +298,12 @@
                 "variables": "{\n  \"id\": \"{{orderId}}\",\n  \"input\": {\n    \"userId\": \"{{userId}}\",\n    \"product\": \"Gaming Laptop\",\n    \"amount\": 72000\n  }\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -244,7 +318,12 @@
                 "variables": "{\n  \"id\": \"{{orderId}}\"\n}"
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         }
       ]
@@ -264,7 +343,12 @@
                 "variables": ""
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         },
         {
@@ -279,7 +363,12 @@
                 "variables": ""
               }
             },
-            "url": { "raw": "{{baseUrl}}{{graphqlPath}}", "host": ["{{baseUrl}}{{graphqlPath}}"] }
+            "url": {
+              "raw": "{{baseUrl}}{{graphqlPath}}",
+              "host": [
+                "{{baseUrl}}{{graphqlPath}}"
+              ]
+            }
           }
         }
       ]

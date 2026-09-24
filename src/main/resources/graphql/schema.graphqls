@@ -20,7 +20,8 @@ type User {
     id: ID!
     name: String!
     email: String!
-    profileImageUrl: String
+    "Base64 data URI, e.g. data:image/png;base64,... (usable directly as <img src>)"
+    profileImage: String
     orders: [Order!]!
 }
 

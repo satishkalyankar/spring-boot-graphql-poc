@@ -62,13 +62,13 @@ public class UserController {
         return ApiResponse.success("User deleted successfully");
     }
 
-    // Profile image upload uses REST multipart; the URL is readable via GraphQL (User.profileImageUrl)
+    // Profile image upload uses REST multipart; stored as Base64 in the DB and readable via GraphQL (User.profileImage)
     @PostMapping(path = "/api/users/{id}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ApiResponse<ProfileImageResponse> uploadProfileImage(@PathVariable Long id, @RequestPart("file") MultipartFile file) {
         User user = userService.updateProfileImage(id, file);
         return ApiResponse.success("Profile image uploaded successfully",
-                new ProfileImageResponse(user.getId(), user.getProfileImageUrl()));
+                new ProfileImageResponse(user.getId(), file.getContentType(), file.getSize()));
     }
 
     @DeleteMapping("/api/users/{id}/profile-image")
