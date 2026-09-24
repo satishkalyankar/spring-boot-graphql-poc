@@ -1,0 +1,72 @@
+type Query {
+    users: UserListResponse!
+    user(id: ID!): UserResponse!
+    orders: OrderListResponse!
+    order(id: ID!): OrderResponse!
+    ordersByUser(userId: ID!): OrderListResponse!
+}
+
+type Mutation {
+    createUser(input: UserInput!): UserResponse!
+    updateUser(id: ID!, input: UserInput!): UserResponse!
+    deleteUser(id: ID!): DeleteResponse!
+
+    createOrder(input: OrderInput!): OrderResponse!
+    updateOrder(id: ID!, input: OrderInput!): OrderResponse!
+    deleteOrder(id: ID!): DeleteResponse!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    profileImageUrl: String
+    orders: [Order!]!
+}
+
+type Order {
+    id: ID!
+    product: String!
+    amount: Float!
+    user: User!
+}
+
+input UserInput {
+    name: String!
+    email: String!
+}
+
+input OrderInput {
+    userId: ID!
+    product: String!
+    amount: Float!
+}
+
+type UserResponse {
+    success: Boolean!
+    message: String!
+    data: User
+}
+
+type UserListResponse {
+    success: Boolean!
+    message: String!
+    data: [User!]!
+}
+
+type OrderResponse {
+    success: Boolean!
+    message: String!
+    data: Order
+}
+
+type OrderListResponse {
+    success: Boolean!
+    message: String!
+    data: [Order!]!
+}
+
+type DeleteResponse {
+    success: Boolean!
+    message: String!
+}
