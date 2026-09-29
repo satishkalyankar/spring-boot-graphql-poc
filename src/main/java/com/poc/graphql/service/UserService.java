@@ -22,4 +22,9 @@ public interface UserService {
     User updateProfileImage(Long id, MultipartFile file);
 
     void removeProfileImage(Long id);
+
+    User getUserByEmail(String email);
+
+    // Returns the user for a SAML login, creating it on first sign-in
+    User provisionSsoUser(String email, String name);
 }

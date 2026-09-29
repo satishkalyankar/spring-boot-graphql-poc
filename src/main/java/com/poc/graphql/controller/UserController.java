@@ -7,6 +7,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.poc.graphql.dto.UserInput;
 import com.poc.graphql.entity.Order;
 import com.poc.graphql.entity.User;
 import com.poc.graphql.response.ApiResponse;
+import com.poc.graphql.security.SamlUserDetails;
 import com.poc.graphql.service.OrderService;
 import com.poc.graphql.service.UserService;
 
@@ -30,10 +32,17 @@ public class UserController {
 
     private final UserService userService;
     private final OrderService orderService;
+    private final SamlUserDetails samlUserDetails;
 
-    public UserController(UserService userService, OrderService orderService) {
+    public UserController(UserService userService, OrderService orderService, SamlUserDetails samlUserDetails) {
         this.userService = userService;
         this.orderService = orderService;
+        this.samlUserDetails = samlUserDetails;
+    }
+
+    @QueryMapping
+    public ApiResponse<User> me(Authentication authentication) {
+        return ApiResponse.success("User fetched successfully", userService.getUserByEmail(samlUserDetails.email(authentication)));
     }
 
     @QueryMapping

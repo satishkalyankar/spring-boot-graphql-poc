@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in - GraphQL POC</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="card">
+    <div class="logo" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="11" width="16" height="10" rx="2"/>
+            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to GraphQL POC with your Microsoft work account</p>
+
+    <div id="error" class="alert alert-error" role="alert" hidden>
+        Sign-in failed. Please try again or contact your administrator.
+    </div>
+    <div id="logout" class="alert alert-success" role="status" hidden>
+        You have been signed out.
+    </div>
+
+    <!-- "sso" is the SAML relying party registration id from application.properties -->
+    <a class="btn btn-secondary" href="/saml2/authenticate/sso">
+        <svg width="20" height="20" viewBox="0 0 21 21" aria-hidden="true">
+            <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+            <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+            <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+            <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+        </svg>
+        Sign in with Microsoft
+    </a>
+
+    <p class="footnote">You will be redirected to Microsoft to sign in.</p>
+</main>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('error').hidden = !params.has('error');
+    document.getElementById('logout').hidden = !params.has('logout');
+</script>
+</body>
+</html>

@@ -1,4 +1,6 @@
 type Query {
+    "The user signed in through SAML SSO"
+    me: UserResponse!
     users: UserListResponse!
     user(id: ID!): UserResponse!
     orders: OrderListResponse!

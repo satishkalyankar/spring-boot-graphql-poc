@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GraphQL POC</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="card">
+    <div id="avatar" class="avatar" aria-hidden="true"></div>
+    <h1 id="name">Loading...</h1>
+    <p id="email" class="subtitle"></p>
+
+    <div id="error" class="alert alert-error" role="alert" hidden>
+        Could not load your profile.
+    </div>
+
+    <a class="btn btn-primary" href="/graphiql">Open GraphiQL</a>
+    <button id="logout" class="btn btn-secondary" type="button">Sign out</button>
+</main>
+<script>
+    function cookie(name) {
+        const match = document.cookie.split('; ').find(c => c.startsWith(name + '='));
+        return match ? decodeURIComponent(match.substring(name.length + 1)) : '';
+    }
+
+    async function loadProfile() {
+        const response = await fetch('/graphql', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({query: '{ me { data { name email profileImage } } }'})
+        });
+        if (response.status === 401) {
+            window.location.href = '/login';
+            return;
+        }
+        const me = (await response.json()).data.me.data;
+        document.getElementById('name').textContent = me.name;
+        document.getElementById('email').textContent = me.email;
+        const avatar = document.getElementById('avatar');
+        if (me.profileImage) {
+            const img = document.createElement('img');
+            img.src = me.profileImage;
+            img.alt = '';
+            avatar.appendChild(img);
+        } else {
+            avatar.textContent = me.name.charAt(0).toUpperCase();
+        }
+    }
+
+    document.getElementById('logout').addEventListener('click', async () => {
+        await fetch('/logout', {method: 'POST', headers: {'X-XSRF-TOKEN': cookie('XSRF-TOKEN')}});
+        window.location.href = '/login?logout';
+    });
+
+    loadProfile().catch(() => {
+        document.getElementById('name').textContent = 'Signed in';
+        document.getElementById('error').hidden = false;
+    });
+</script>
+</body>
+</html>

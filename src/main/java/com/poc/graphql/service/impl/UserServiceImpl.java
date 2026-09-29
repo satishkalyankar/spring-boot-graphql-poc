@@ -92,4 +92,17 @@ public class UserServiceImpl implements UserService {
         user.setProfileImage(null);
         userRepository.save(user);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+    }
+
+    @Override
+    public User provisionSsoUser(String email, String name) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> userRepository.save(new User(name, email)));
+    }
 }
