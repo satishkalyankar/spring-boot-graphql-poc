@@ -4,6 +4,7 @@ type Query {
     orders: OrderListResponse!
     order(id: ID!): OrderResponse!
     ordersByUser(userId: ID!): OrderListResponse!
+    userSearch(name: String, email: String, page: Int = 0, size: Int = 10): UserListResponse!
 }
 
 type Mutation {

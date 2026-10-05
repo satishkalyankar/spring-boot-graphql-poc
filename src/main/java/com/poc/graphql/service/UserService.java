@@ -13,6 +13,8 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    List<User> searchUsers(String name, String email, int page, int size);
+
     User createUser(UserInput input);
 
     User updateUser(Long id, UserInput input);

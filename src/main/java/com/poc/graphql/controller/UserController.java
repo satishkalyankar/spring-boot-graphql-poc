@@ -83,4 +83,22 @@ public class UserController {
     public List<Order> orders(User user) {
         return orderService.getOrdersByUserId(user.getId());
     }
+
+    @QueryMapping
+    public ApiResponse<List<User>> userSearch(
+            @Argument String name,
+            @Argument String email,
+            @Argument Integer page,
+            @Argument Integer size) {
+
+        return ApiResponse.success(
+                "Users fetched successfully",
+                userService.searchUsers(
+                        name,
+                        email,
+                        page != null ? page : 0,
+                        size != null ? size : 10
+                )
+        );
+    }
 }
